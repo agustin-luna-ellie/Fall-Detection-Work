@@ -1,0 +1,6 @@
+Optimal Threshold: 0.9526
+(Default threshold is 0.5)
+
+To use in Wear OS:
+val optimalThreshold = 0.9526f
+val isFall = output[0][1] > optimalThreshold

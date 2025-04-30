@@ -1,0 +1,12 @@
+Optimal Threshold: 0.9570
+(Default threshold is 0.5)
+
+To use in Wear OS:
+val optimalThreshold = 0.957f
+val isFall = output[0][1] > optimalThreshold
+
+Quantization Parameters:
+- Input scale: 0.011057176627218723
+- Input zero point: -82
+- Output scale: 0.00390625
+- Output zero point: -128

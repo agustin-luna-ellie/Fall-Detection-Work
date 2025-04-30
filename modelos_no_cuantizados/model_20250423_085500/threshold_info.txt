@@ -1,0 +1,8 @@
+Optimal Threshold: 0.9667
+(Default threshold is 0.5)
+
+To use in Wear OS:
+val optimalThreshold = 0.9667f
+val isFall = output[0][1] > optimalThreshold
+
+Note: This is a FLOAT32 model (no quantization needed)

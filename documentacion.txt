@@ -1,0 +1,9 @@
+Funcionamiento de la descarga del modelo y las versiones
+
+Par las versiones de wear OS no estan actualizadas as ultimas versiones de tensor flow lite (o al menos no sabemos como se llama la biblioteca mas actualizadas), por esta razon
+hay que exportar los modelo .tflite a los codigos de android en una vesion que sea compatible, en este caso la 2.12.0 . Los primeros errores se dieron ya que los modelo obtenidos
+a traves del collab usan la ultima version de tensorflow que sera la 2.18.0 que no es compatible con lo dicho previamente
+
+Por esta razon se crea el codigo de python tflite_generator que permite generar el modelo de tflite bajo la version adecuada (2.12.0), notar que por esta razon, es necesario crear un ambiente aparte para que tensorfloww sea la version adecuada y no este actualizada  ultimo momento
+
+Tambien es importante notar que para poder hacer esta conversion tenemos que baja el modelo en el formato de carpeta (es decir no tieen que ser ni .keras ni .h5) . Este codigo para la correcta descarga del modelo ya fue agregado a los codigos de collab. Lo que se hace por lo tanto es un export del modelo , la linea de codigo se deja de todas formas en esta misma carpeta para que quede documentada Tambien y no se pierda
