@@ -125,13 +125,13 @@ class_weights = {0: 1.0, 1: fall_weight * 1.5}
 class BalanceMetrics(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs=None):
         # Target: precision > 0.5 and recall between 0.7-0.9
-        if logs['val_precision'] > 0.8 and 0.8 <= logs['val_recall'] <= 0.9:
+        if logs['val_precision'] > 0.9 and 0.9 <= logs['val_recall'] <= 0.95:
             self.model.stop_training = True
 
 
 #Callbacks usados en el entrenamiento
 callbacks = [
-    tf.keras.callbacks.EarlyStopping(monitor='val_auc', patience=20, mode='max', restore_best_weights=True),
+    tf.keras.callbacks.EarlyStopping(monitor='val_auc', patience=30, mode='max', restore_best_weights=True),
     tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5, min_lr=1e-6),
     BalanceMetrics()
 ]
@@ -192,9 +192,11 @@ mientras maximizamos la precision del modelo"""
 precision, recall, thresholds = precision_recall_curve(y_true, y_scores_tflite)
 
 # Buscamos el umbral en donde el recall supera un cierto valor y se maximiza la precision
-viable_thresholds = [(t, p, r) for p, r, t in zip(precision, recall, thresholds) if r >= 0.9]
+viable_thresholds = [(t, p, r) for p, r, t in zip(precision, recall, thresholds) if  p >= 0.95]
+
 if viable_thresholds:
-    viable_thresholds.sort(key=lambda x: x[1], reverse=True)  # Sort by precision
+    # Ordenar por una métrica combinada (por ejemplo, F1-score)
+    viable_thresholds.sort(key=lambda x: 2 * (x[1] * x[2]) / (x[1] + x[2]), reverse=True)  # F1-score
     optimal_threshold = viable_thresholds[0][0]
 else:
     optimal_threshold = 0.5  # Fallback
@@ -241,3 +243,9 @@ plt.savefig(os.path.join(model_dir, "confusion_matrices.png"))
 plt.close()
 
 print(f"\nAll outputs saved in: {os.path.abspath(model_dir)}")
+
+
+# Verificar si funciona bien despues
+print("Original Predictions (first 10):", y_pred_original[:10])
+print("TFLite Predictions (first 10):", y_pred_tflite[:10])
+print("Optimal Threshold Predictions (first 10):", y_pred_optimal[:10])

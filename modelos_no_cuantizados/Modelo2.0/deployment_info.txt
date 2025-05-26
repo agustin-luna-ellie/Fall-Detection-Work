@@ -1,0 +1,18 @@
+Optimal Threshold Analysis
+==========================
+Optimal Threshold: 0.849457
+Expected Precision: 0.9265
+Expected Recall: 0.7003
+
+Deployment Information:
+- Model input shape: [ 1 40  3]
+- Model input type: <class 'numpy.float32'>
+- Data preprocessing: RAW (no normalization required)
+
+Wear OS Implementation:
+val optimalThreshold = 0.849457f
+val isFall = modelOutput[1] > optimalThreshold
+
+Use raw accelerometer data directly (no preprocessing needed):
+- X, Y, Z acceleration values in m/s² or g-units
+- 40-sample sliding window with 1-sample step
